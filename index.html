@@ -1,0 +1,208 @@
+<html>
+<head>
+    <title>doughnuts</title>
+<body>
+<button id= "button", onclick="myFunction()">Day/Night</button>
+<button id= "button2", onclick="myFunction2()">Populate!</button>
+<button id= "button3", onclick="myFunction3()">Increase Speed</button>
+<button id= "button4", onclick="myFunction4()">Decrease Speed</button>
+</body>
+    <style>
+    	body{
+    		margin: 0;
+    		overflow: hidden;
+			background-color: #ffccff;
+    	}
+		button {
+    background-color: #660066; 
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+		button2 {
+    background-color: #ff4dd2; 
+    border: none;
+    color: white;
+    padding: 50px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+		button3 {
+    background-color: #ff4dd2; 
+    border: none;
+    color: white;
+    padding: 85px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+		button4 {
+    background-color: #ff4dd2; 
+    border: none;
+    color: white;
+    padding: 100px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+    </style>
+</head>
+<body>
+
+    <canvas id="myCanvas"></canvas>
+
+<script src="three.js"></script>
+
+
+    <script>
+	var speed=1;
+	var x = true;
+	var geometry;
+	var nr=0;
+	function myFunction() {
+		if(x==true)
+		{    scene.background =textureb1; 
+			x=false;
+		}
+		else
+		{    scene.background = textureb2; 
+			x=true;
+		}
+}
+
+	function myFunction3() {
+speed++;
+}
+	function myFunction4() {
+if(speed>0) speed--;
+}
+
+	function myFunction2() {
+		
+	var plusOrMinus = Math.random() < 0.5 ? -1 : 1;
+	var randomNumber = Math.floor(Math.random() * 7);
+	for(i=0;i<randomNumber;i++)
+		{
+		
+	 var s = Math.floor(Math.random() * 30)+5;
+	 geometry = new THREE.TorusGeometry(s*2, s, 100,60);
+		 var mesh = new THREE.Mesh(geometry, material);
+		mesh.position.z = -1000;
+		mesh.position.y-= plusOrMinus * Math.floor(Math.random() * 10)*50;
+		mesh.position.x = plusOrMinus * Math.floor(Math.random() * 10)*100;
+		scene.add(mesh);
+		objects.push(mesh);
+		//console.log(objects.length);
+	}
+		
+}
+
+ var renderer,
+    	scene,
+    	camera,
+    	myCanvas = document.getElementById('myCanvas');
+
+
+    renderer = new THREE.WebGLRenderer({
+      canvas: myCanvas, 
+      antialias: true,
+     
+    });
+    
+    renderer.setClearColor(0xffffff);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+
+    camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 300, 10000 );
+
+
+    scene = new THREE.Scene();
+   
+    textureb1 =new THREE.ImageUtils.loadTexture( "clouds.jpg" ); 
+    textureb2 =new THREE.ImageUtils.loadTexture( "clouds_night.jpg" ); 
+	scene.background = textureb1;
+	
+	
+	var light = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(light);
+
+    var light2 = new THREE.PointLight(0xffffff, 0.5);
+    scene.add(light2);
+
+	
+	
+
+var texture = THREE.ImageUtils.loadTexture( "sp.jpg" );  
+var texture2 = THREE.ImageUtils.loadTexture( "sprinkles.png" ); 
+var texture3 = THREE.ImageUtils.loadTexture( "s1.jpg" ); 
+var texture4 = THREE.ImageUtils.loadTexture( "spp.jpg" );
+var texture5 = THREE.ImageUtils.loadTexture( "sp2.jpg" );
+ 
+ camera.position.z = 5;
+
+var frame = 0;
+ 
+var material = new THREE.MeshBasicMaterial();
+var objects=[];
+
+function render() {
+    frame++;
+
+    if (frame > 100) {
+        material.map = texture;
+        material.needsUpdate = true;
+       
+    }
+    if (frame > 200) {
+          material.map = texture2;
+        material.needsUpdate = true;
+        
+    }
+	   if (frame > 300) {
+           material.map = texture3;
+        material.needsUpdate = true;
+       
+    }
+	   if (frame > 400) {
+           material.map = texture4;
+        material.needsUpdate = true;
+
+       
+    }
+	  if (frame > 500) {
+           material.map = texture5;
+        material.needsUpdate = true;
+       frame=0;
+       
+    }
+    requestAnimationFrame(render);
+	
+ 	for(j=0;j<objects.length;j++)
+ {
+var a = Math.floor(Math.random() * 7);
+  	if(objects[j].position.y==-600)
+	{objects.splice(j,1);}
+	else
+	{objects[j].position.y -= speed;
+	objects[j].rotation.x += 0.01*a;
+   objects[j].rotation.y += 0.01*a;
+	}
+}
+    renderer.render(scene, camera);
+};
+
+render();
+
+    </script>
+</body>
+</html>
